@@ -1,0 +1,5 @@
+common-agent: A Java Agent based on plugins
+Java Agent:
+    java -javaagent common-agent-$version.jar -jar <main jar>
+JVM Attach:
+    java -jar common-agent-$version.jar --attach <pid>

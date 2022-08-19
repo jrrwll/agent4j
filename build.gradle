@@ -1,0 +1,50 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+sourceCompatibility = JavaVersion.VERSION_1_8
+group = GROUP_ID
+version = VERSION
+
+def launcherClass = 'org.dreamcat.common.agent.Launcher'
+
+jar {
+    manifest {
+        attributes 'Agent-Class': launcherClass
+        attributes 'Main-Class': launcherClass
+        attributes 'Premain-Class': launcherClass
+        attributes 'Can-Redefine-Classes': true
+        attributes 'Can-Retransform-Classes': true
+        attributes 'Can-Set-Native-Method-Prefix': true
+    }
+}
+
+ext {
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    lombokVersion = '1.18.24'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    slf4jVersion = '1.7.36'
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+
+    implementation "org.dreamcat:common-core:0.2.1"
+    implementation "org.dreamcat:common-x:0.2.1"
+    // https://mvnrepository.com/artifact/org.javassist/javassist
+    implementation "org.javassist:javassist:3.29.0-GA"
+    implementation "org.slf4j:slf4j-simple:$slf4jVersion"
+}
+
+apply from: "./publish.gradle"
+
