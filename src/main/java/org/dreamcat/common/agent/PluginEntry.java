@@ -1,5 +1,6 @@
 package org.dreamcat.common.agent;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,12 @@ public interface PluginEntry {
         return "Plugin " + getName();
     }
 
-    List<Transformer> getTransformers();
+    default List<Transformer> getTransformers() {
+        return Collections.emptyList();
+    }
+
+    default PostConfigurationProcessor getPostConfigurationProcessor() {
+        return null;
+    }
 
 }

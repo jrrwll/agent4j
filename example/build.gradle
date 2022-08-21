@@ -1,0 +1,17 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+// ./gradlew :example:run
+def rooJar = "${rootProject.name}-${rootProject.version}.jar"
+
+applicationDefaultJvmArgs = [
+        "-javaagent:${rootProject.buildDir}/libs/$rooJar"
+]
+
+dependencies {
+    implementation "org.dreamcat:common-core:0.3"
+}
+
+application {
+    mainClassName = 'HeartbeatTest'
+}

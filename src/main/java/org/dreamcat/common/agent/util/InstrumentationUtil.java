@@ -16,6 +16,10 @@ public class InstrumentationUtil {
     private InstrumentationUtil() {
     }
 
+    public static Instrumentation get() {
+        return inst;
+    }
+
     public static long getObjectSize(Object o) {
         return inst.getObjectSize(o);
     }

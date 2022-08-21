@@ -39,8 +39,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
     implementation "org.slf4j:slf4j-api:$slf4jVersion"
 
-    implementation "org.dreamcat:common-core:0.2.1"
-    implementation "org.dreamcat:common-x:0.2.1"
+    implementation "org.dreamcat:common-core:0.3"
+    implementation "org.dreamcat:common-x:0.3"
     // https://mvnrepository.com/artifact/org.javassist/javassist
     implementation "org.javassist:javassist:3.29.0-GA"
     implementation "org.slf4j:slf4j-simple:$slf4jVersion"

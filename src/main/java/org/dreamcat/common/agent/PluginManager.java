@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dreamcat.common.io.IniUtil;
+import org.dreamcat.common.util.ReflectUtil;
 
 /**
  * @author Jerry Will
@@ -24,6 +26,7 @@ public class PluginManager {
     private final Instrumentation inst;
     private final Environment env;
     private final ChainTransformer transformer;
+    private final List<PostConfigurationProcessor> postConfigurationProcessors;
 
     public void loadPlugins() {
         File pluginDir = new File(env.getBaseDir(), "plugins");
@@ -57,12 +60,10 @@ public class PluginManager {
         }
         if (clazz == null) return;
 
-        PluginEntry entry = (PluginEntry) clazz.newInstance();
+        PluginEntry entry = (PluginEntry) ReflectUtil.newInstance(clazz);
         String pluginName = entry.getName();
         if (!pluginName.matches("[0-9a-zA-Z][_0-9a-zA-Z]*")) {
-            if (env.isDebug()) {
-                log.debug("{} doesn't extend to PluginEntry", clazz);
-            }
+            log.warn("{} has a invalid plugin name {}", clazz, pluginName);
             return;
         }
         Map<String, String> config = env.getConfigMap()
@@ -70,6 +71,9 @@ public class PluginManager {
         entry.init(config);
 
         transformer.addTransformers(entry.getTransformers());
+        PostConfigurationProcessor processor = entry.getPostConfigurationProcessor();
+        if (processor != null) postConfigurationProcessors.add(processor);
+
         log.info("loaded plugin {}", pluginName);
     }
 
